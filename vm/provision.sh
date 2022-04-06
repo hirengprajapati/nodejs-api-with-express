@@ -27,6 +27,7 @@ apt-get install -y \
   unzip \
   htop \
   nginx \
+  supervisor \
   ghostscript \
   gdebi \
   ttf-mscorefonts-installer \
@@ -45,19 +46,26 @@ sudo apt-get install -y nodejs
 
 sudo apt-get install -y build-essential
 
+wget https://github.com/mailhog/MailHog/releases/download/v0.2.0/MailHog_linux_amd64
+mv MailHog_linux_amd64 /usr/local/bin/mailhog
+chmod 0755 /usr/local/bin/mailhog
+
 if [ ! -d /var/bak ]; then
     mkdir -p /var/bak
     mv /etc/nginx/nginx.conf /var/bak/nginx.conf
     mv /etc/nginx/sites-available/default /var/bak/default
+    mv /etc/supervisor/supervisord.conf /var/bak/supervisord.conf
 fi
 
 rm -f /etc/nginx/nginx.conf
 rm -f /etc/nginx/sites-available/default
 rm -f /etc/nginx/sites-enabled/default
+rm -f /etc/supervisor/supervisord.conf
 
 cp /vagrant/vm/nginx.conf /etc/nginx/nginx.conf
 cp /vagrant/vm/nginx-react-app.conf /etc/nginx/sites-available/nginx-react-app.conf
 cp /vagrant/vm/nginx-node-app.conf /etc/nginx/sites-available/nginx-node-app.conf
+cp /vagrant/vm/supervisord.conf /etc/supervisor/supervisord.conf
 
 ln -s /etc/nginx/sites-available/nginx-react-app.conf /etc/nginx/sites-enabled/nginx-react-app.conf
 ln -s /etc/nginx/sites-available/nginx-node-app.conf /etc/nginx/sites-enabled/nginx-node-app.conf
