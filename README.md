@@ -18,16 +18,9 @@ cd /vagrant
 bash vm/provision.sh
 ```
 
-## Install vendors
+## Install Mysql
 
 ```
-vagrant ssh
-cd /vagrant
-composer install
-```
-
-*The provision script does this for you!*
-
 sudo apt-get update
 sudo apt-get install mysql-server
 
@@ -39,7 +32,19 @@ sudo systemctl restart mysql
 PasswordAuthentication yes
 sudo service ssh restart
 
-
-CREATE USER 'crm'@'localhost' IDENTIFIED BY 'crm@123';
+vagrant ssh
+mysql
+CREATE USER 'node'@'localhost' IDENTIFIED BY 'node@123';
 GRANT ALL PRIVILEGES ON * . * TO 'crm'@'localhost';
 FLUSH PRIVILEGES;
+CREATE DATABASE IF NOT EXISTS `nodeapi`;
+
+```
+```
+vagrant ssh
+cd /vagrant/nodeapi
+npm install --no-bin-links
+config.json // add credentials
+npm start
+api documentation : http://localhost:8002/api-docs/  OR  http://192.168.50.50:3000/api-docs/
+```
